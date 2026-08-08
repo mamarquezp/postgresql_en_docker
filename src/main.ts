@@ -8,11 +8,16 @@ async function main() {
   console.log('usuarios que ya estan en la base:');
   console.log(await usuariosService.listarTodos());
 
-  const nuevo = await usuariosService.registrar({
-    email: 'sara@correo.com',
-    nombre: 'Sara',
-  });
-  console.log('usuario creado:', nuevo);
+  const existente = await usuariosService.buscarPorEmail('sara@correo.com');
+  if (!existente) {
+    const nuevo = await usuariosService.registrar({
+      email: 'sara@correo.com',
+      nombre: 'Sara',
+    });
+    console.log('usuario creado:', nuevo);
+  } else {
+    console.log('sara ya estaba creada de una corrida anterior');
+  }
 
   try {
     await usuariosService.registrar({
